@@ -1,0 +1,52 @@
+GET http://localhost:5133/api/products
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+ %}
+
+###
+
+POST http://localhost:5133/api/products
+Content-Type: application/json
+
+{
+  "productName": "My Product"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        var productName = response.body.productName;
+        client.assert(productName === "My Product", "Product name is not correct");
+
+    });
+ %}
+
+###
+
+PUT http://localhost:5133/api/products/1
+Content-Type: application/json
+
+{
+  "productName": "My Product Updated"
+}
+
+> {%
+    client.test("Request executed successfully", function() {
+        var productName = response.body.productName;
+        client.assert(productName === "My Product Updated", "Product name is not correct");
+
+    });
+ %}
+
+###
+
+DELETE http://localhost:5133/api/products/1
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+ %}
+
