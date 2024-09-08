@@ -29,27 +29,24 @@ public class ProductController(MyDbContext context) : ControllerBase
     [Route("api/products/{id}")]
     public ActionResult UpdateProduct(int id, [FromBody] Product product)
     {
-        var existingProduct = context.Products.Find(id);
-        if (existingProduct == null)
-        {
-            return NotFound();
-        }
-        existingProduct.ProductName = product.ProductName;
+        var newProduct = new Product { Id = id, ProductName = product.ProductName };
+        context.Products.Update(newProduct);
         context.SaveChanges();
-        return Ok(existingProduct);
+        return Ok(newProduct);
+        
     }
     
     [HttpDelete]
     [Route("api/products/{id}")]
     public ActionResult DeleteProduct(int id)
     {
-        var existingProduct = context.Products.Find(id);
-        if (existingProduct == null)
+        var result = context.Products
+            .Where(p => p.Id == id)
+            .ExecuteDelete();
+        if(result == 0)
         {
             return NotFound();
         }
-        context.Products.Remove(existingProduct);
-        context.SaveChanges();
         return Ok();
     }
 }
