@@ -27,6 +27,7 @@ public class Program
         
         using (var scope = app.Services.CreateScope())
         {
+           scope.ServiceProvider.GetRequiredService<MyDbContext>().Database.EnsureDeleted();
            scope.ServiceProvider.GetRequiredService<MyDbContext>().Database.EnsureCreated();
         }
         

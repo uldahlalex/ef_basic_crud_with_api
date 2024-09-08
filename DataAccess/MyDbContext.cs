@@ -4,34 +4,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess;
 
-public partial class MyDbContext : DbContext
+public class Product
+{
+    public string ProductName { get; set; }
+    
+    public int Id { get; set; }
+}
+
+public  class MyDbContext : DbContext
 {
     public MyDbContext(DbContextOptions<MyDbContext> options)
-        : base(options)
-    {
-    }
+        : base(options) { }
 
-    public DbSet<Product> Products
-    {
-        get; set;
-    }
+    public DbSet<Product> Products { get; set; }
  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
-        OnModelCreatingPartial(modelBuilder);
-    }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-}
-
-
-public class Product
-{
-    public string ProductName
-    {
-        get; set;
+        modelBuilder.Entity<Product>().HasKey(p => p.Id);
     }
     
-    public int Id { get; set; }
 }
